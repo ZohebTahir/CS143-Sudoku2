@@ -34,14 +34,14 @@ public class SudokuBoard {
       String line = "+-------+-------+-------+\n";
 
       for (int r = 0; r < 9; r++) {
-        if (r % 3 == 0) {
+         if (r % 3 == 0) {
             result = result + line;
-        }
-      for (int c = 0; c < 9; c++) {
-        if (c % 3 == 0) {
-            result = result + "| ";
-        }
-        if (board[r][c] == 0) {
+         }
+         for (int c = 0; c < 9; c++) {
+            if (c % 3 == 0) {
+               result = result + "| ";
+            }
+            if (board[r][c] == 0) {
                 result = result + "- "; 
             } else {
                 result = result + board[r][c] + " ";
