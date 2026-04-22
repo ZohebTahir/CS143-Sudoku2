@@ -39,7 +39,7 @@ public class SudokuBoard {
             if(!isUniqueValid.contains(board[r][c]) && board[r][c] != 0) {
                isUniqueValid.add(board[r][c]);
             } else {
-               System.out.print("Not valid!");
+               System.out.print("Not valid row!");
                return false; 
             }
          }
@@ -51,18 +51,28 @@ public class SudokuBoard {
             if(!isUniqueColumn.contains(board[r][c]) && board[r][c] != 0) {
                isUniqueColumn.add(board[r][c]);
             } else {
-               System.out.print("Not valid!");
+               System.out.print("Not valid column!");
                return false; 
             }
          }
       }
       
       // Checking Mini Squares
-      Set<Integer> isUniqueMiniSquare = new TreeSet<>();
+      
       for(int i = 0; i < 9; i++) {
-         miniSquare(i);
-         isUniqueMiniSquare.add()   
-      }
+        Set<Integer> isUniqueMiniSquare = new TreeSet<>();
+        int[][] miniArr = miniSquare(i);
+        for(int r = 0; r < miniArr.length; r++) {
+            for(int c = 0; c < miniArr[r].length; c++) {
+               if (!isUniqueMiniSquare.contains(miniArr[r][c]) && miniArr[r][c] != 0) {
+                  isUniqueMiniSquare.add(miniArr[r][c]);
+               } else {
+                  System.out.println("Not valid mini!");
+                  return false;
+               }
+            }
+        }   
+       }
       
     System.out.print("is Valid");
     return true; 
@@ -79,6 +89,14 @@ public class SudokuBoard {
          }
       }
       return mini;
+   }
+   
+   public boolean isSolved() {
+      if(isValid()){
+      
+         return true;
+      }
+      return false;  
    }
       
    public String toString() {
