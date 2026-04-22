@@ -4,7 +4,8 @@ import java.io.*;
 public class SudokuEngine {
    public static void main(String[] args) {
       String fileName = "data1.sdk";
-      SudokuBoard board = new SudokuBoard(fileName);  
+      SudokuBoard board = new SudokuBoard(fileName);
+      board.isValid();   
       System.out.println(board); 
    }
 }

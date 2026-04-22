@@ -31,20 +31,31 @@ public class SudokuBoard {
    }
 
    public boolean isValid() {
-      Set<Integer> isUnique = new TreeSet<>(); 
+      Set<Integer> isUnique = new TreeSet<>();
+      int row = board.length; 
       
       for(int r = 0; r < board.length; r++) {
          for(int c = 0; c < board[r].length; c++) {
             if(!isUnique.contains(board[r][c]) && board[r][c] != 0) {
                isUnique.add(board[r][c]);
             } else {
+               System.out.print("Not valid!");
                return false; 
             }
          }
       }
-      return true;
-      
-   
+      for(int c = 0; c < board.length; c++) {
+         for(int r = 0; r < board[c].length; r++) {
+            if(!isUnique.contains(board[r][c]) && board[r][c] != 0) {
+               isUnique.add(board[r][c]);
+            } else {
+               System.out.print("Not valid!");
+               return false; 
+            }
+         }
+      }
+    System.out.print("is Valid");
+    return true; 
    }   
    public String toString() {
       String result = "";
