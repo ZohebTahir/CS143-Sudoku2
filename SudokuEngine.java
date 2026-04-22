@@ -5,7 +5,8 @@ public class SudokuEngine {
    public static void main(String[] args) {
       String fileName = "data1.sdk";
       SudokuBoard board = new SudokuBoard(fileName);
-      board.isValid();   
+      board.isSolved();
+      board.isValid();  
       System.out.println(board); 
    }
 }

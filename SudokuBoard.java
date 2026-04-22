@@ -93,10 +93,26 @@ public class SudokuBoard {
    
    public boolean isSolved() {
       if(isValid()){
-      
-         return true;
+      Map<Integer, Integer> solvedMap = new TreeMap<>();
+      for (int i = 1; i < 10; i++) {
+         solvedMap.put(i,0);
       }
-      return false;  
+      for(int r = 0; r < board.length; r++) {
+         for(int c = 0; c < board[r].length; c++) {
+            if (board[r][c] != 0) {
+               int value = solvedMap.get(board[r][c]);
+               solvedMap.put(board[r][c], value++);   
+            }
+         }
+      }
+      for(int v: solvedMap.values()) {
+         if(v != 9) {
+            System.out.println("Not Solved");
+            return false;
+         }
+      }   
+      } 
+       return true; 
    }
       
    public String toString() {
