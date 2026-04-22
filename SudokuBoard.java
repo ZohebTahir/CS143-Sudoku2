@@ -31,32 +31,56 @@ public class SudokuBoard {
    }
 
    public boolean isValid() {
-      Set<Integer> isUnique = new TreeSet<>();
+      Set<Integer> isUniqueValid = new TreeSet<>();
       int row = board.length; 
-      
+      // Checking Rows
       for(int r = 0; r < board.length; r++) {
          for(int c = 0; c < board[r].length; c++) {
-            if(!isUnique.contains(board[r][c]) && board[r][c] != 0) {
-               isUnique.add(board[r][c]);
+            if(!isUniqueValid.contains(board[r][c]) && board[r][c] != 0) {
+               isUniqueValid.add(board[r][c]);
             } else {
                System.out.print("Not valid!");
                return false; 
             }
          }
       }
+      // Checking Columns
+      Set<Integer> isUniqueColumn = new TreeSet<>(); 
       for(int c = 0; c < board.length; c++) {
          for(int r = 0; r < board[c].length; r++) {
-            if(!isUnique.contains(board[r][c]) && board[r][c] != 0) {
-               isUnique.add(board[r][c]);
+            if(!isUniqueColumn.contains(board[r][c]) && board[r][c] != 0) {
+               isUniqueColumn.add(board[r][c]);
             } else {
                System.out.print("Not valid!");
                return false; 
             }
          }
       }
+      
+      // Checking Mini Squares
+      Set<Integer> isUniqueMiniSquare = new TreeSet<>();
+      for(int i = 0; i < 9; i++) {
+         miniSquare(i);
+         isUniqueMiniSquare.add()   
+      }
+      
     System.out.print("is Valid");
     return true; 
-   }   
+   }
+   
+   private int[][] miniSquare(int spot) {
+      int[][] mini = new int[3][3];
+      for(int r = 0; r < 3; r++) {
+         for(int c = 0; c < 3; c++) {
+            // whoa - wild! This took me a solid hour to figure out (at least)
+            // This translates between the "spot" in the 9x9 Sudoku board
+            // and a new mini square of 3x3
+            mini[r][c] = board[(spot - 1) / 3 * 3 + r][(spot - 1) % 3 * 3 + c];
+         }
+      }
+      return mini;
+   }
+      
    public String toString() {
       String result = "";
       String line = "+-------+-------+-------+\n";
