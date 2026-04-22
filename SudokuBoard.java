@@ -12,7 +12,7 @@ public class SudokuBoard {
       this();
       try {
         Scanner console = new Scanner(new File(fileName));
-        for(int r = 0; r < board[r].length; r++){
+        for(int r = 0; r < board.length; r++){
             if(console.hasNext()) {
             String line = console.next();
             for(int c = 0; c < board[0].length; c++) {
@@ -28,7 +28,24 @@ public class SudokuBoard {
     } catch (FileNotFoundException e) {
         System.out.println("Error: File not found.");
     }
-}   
+   }
+
+   public boolean isValid() {
+      Set<Integer> isUnique = new TreeSet<>(); 
+      
+      for(int r = 0; r < board.length; r++) {
+         for(int c = 0; c < board[r].length; c++) {
+            if(!isUnique.contains(board[r][c]) && board[r][c] != 0) {
+               isUnique.add(board[r][c]);
+            } else {
+               return false; 
+            }
+         }
+      }
+      return true;
+      
+   
+   }   
    public String toString() {
       String result = "";
       String line = "+-------+-------+-------+\n";
