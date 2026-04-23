@@ -29,55 +29,84 @@ public class SudokuBoard {
         System.out.println("Error: File not found.");
     }
    }
-
-   public boolean isValid() {
-      Set<Integer> isUniqueValid = new TreeSet<>();
-      int row = board.length; 
-      // Checking Rows
+   
+   //helper for isValid() to validate rows
+   private boolean validRows() {       
       for(int r = 0; r < board.length; r++) {
+      Set<Integer> rowSet = new HashSet<>();
+      
          for(int c = 0; c < board[r].length; c++) {
-            if(!isUniqueValid.contains(board[r][c]) && board[r][c] != 0) {
-               isUniqueValid.add(board[r][c]);
-            } else {
-               System.out.print("Not valid row!");
-               return false; 
+            int cell = board[r][c];
+            
+            //deals with illegal characters
+            if (cell < 0 || cell > 9) {
+               return false;
             }
-         }
-      }
-      // Checking Columns
-      Set<Integer> isUniqueColumn = new TreeSet<>(); 
-      for(int c = 0; c < board.length; c++) {
-         for(int r = 0; r < board[c].length; r++) {
-            if(!isUniqueColumn.contains(board[r][c]) && board[r][c] != 0) {
-               isUniqueColumn.add(board[r][c]);
-            } else {
-               System.out.print("Not valid column!");
-               return false; 
-            }
-         }
-      }
-      
-      // Checking Mini Squares
-      
-      for(int i = 0; i < 9; i++) {
-        Set<Integer> isUniqueMiniSquare = new TreeSet<>();
-        int[][] miniArr = miniSquare(i);
-        for(int r = 0; r < miniArr.length; r++) {
-            for(int c = 0; c < miniArr[r].length; c++) {
-               if (!isUniqueMiniSquare.contains(miniArr[r][c]) && miniArr[r][c] != 0) {
-                  isUniqueMiniSquare.add(miniArr[r][c]);
-               } else {
-                  System.out.println("Not valid mini!");
-                  return false;
+            if (cell != 0) {
+               if (rowSet.contains(cell)) {
+                  //System.out.print("Duplicate in row");
+                  return false; 
                }
             }
-        }   
-       }
-      
-    System.out.print("is Valid");
-    return true; 
+            rowSet.add(cell);
+         }
+      }
+      return true;
    }
    
+   //helper for isValid() to validate columns
+   private boolean validCols() {
+      for(int c = 0; c < board.length; c++) {
+      Set<Integer> colSet = new HashSet<>(); 
+
+         for(int r = 0; r < board[c].length; r++) {
+            int cell = board[r][c];
+            
+            //deals with illegal characters
+            if (cell < 0 || cell > 9) {
+               return false;
+            }
+            if(cell != 0) {
+               if (colSet.contains(cell)) {
+                  //System.out.println("Duplicate in column");
+                  return false;
+               }
+            } 
+            colSet.add(cell);
+         }
+      }
+      return true;
+   }
+   
+   //helper for isValid() to validate 3x3s
+   private boolean validMinis() {
+      for(int i = 1; i <= 9; i++) {
+         Set<Integer> miniSet = new HashSet<>();
+         int[][] miniArr = miniSquare(i);
+         
+         for(int r = 0; r < miniArr.length; r++) {
+            for(int c = 0; c < miniArr[r].length; c++) {
+               int cell = miniArr[r][c];
+                  
+               //deals with illegal characters
+               if (cell < 0 || cell > 9) {
+                  return false;
+               }
+               if (cell != 0) {
+                  if (miniSet.contains(cell)) {
+                     //System.out.println("Duplicate in mini square");
+                     return false;
+                  }
+               }
+               miniSet.add(cell);
+            }
+         }   
+      }  
+      //System.out.print("is a Valid board!");
+      return true;
+   }
+   
+   //3x3 helper from Crystal
    private int[][] miniSquare(int spot) {
       int[][] mini = new int[3][3];
       for(int r = 0; r < 3; r++) {
@@ -91,29 +120,40 @@ public class SudokuBoard {
       return mini;
    }
    
+   public boolean isValid() {
+      // Checking Rows and columns and mini squares
+      return validRows() && validCols() && validMinis();         
+   }
+ 
    public boolean isSolved() {
-      if(isValid()){
-      Map<Integer, Integer> solvedMap = new TreeMap<>();
+      Map<Integer, Integer> map = new HashMap<>();
       for (int i = 1; i < 10; i++) {
-         solvedMap.put(i,0);
+         map.put(i,0);
       }
       for(int r = 0; r < board.length; r++) {
          for(int c = 0; c < board[r].length; c++) {
-            if (board[r][c] != 0) {
-               int value = solvedMap.get(board[r][c]);
-               solvedMap.put(board[r][c], value++);   
+            int key = board[r][c];
+            
+            //deals with illegal characters
+            if (key < 0 || key > 9) {
+               return false;
+            }
+            if (key != 0) {
+               int val = map.get(key);
+               val++;
+               map.put(key, val);   
             }
          }
       }
-      for(int v: solvedMap.values()) {
+      for(int v: map.values()) {
          if(v != 9) {
-            System.out.println("Not Solved");
+            //System.out.println("Not Solved");
             return false;
          }
       }   
-      } 
-       return true; 
-   }
+      return true; 
+   } 
+   
       
    public String toString() {
       String result = "";
